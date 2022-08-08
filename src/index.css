@@ -61,7 +61,12 @@ a{
 }
 
 .header_cart{
-  margin-left: 20px;
+  padding: 15px 10px;
+  margin-top: 6px;
+}
+
+.border{
+  border : 1px solid black;
 }
 
 .logo{
@@ -70,17 +75,14 @@ a{
 }
 
 .header_currency{
-  padding: 15px 10px;
+  padding: 16px 10px;
   font-size: 1.2rem;
   text-align: center;
 }
 
 .currency_list{
   font-size: 0.8rem;
-  width: 200%;
-  padding: 5px 3px;
-  background-color: white;
-  box-shadow: 0 0 2px white;
+  padding: 7px;
 }
 
 .currency_list:hover{
@@ -88,8 +90,10 @@ a{
 }
 
 .currency_list_position{
-  top: 100%;
+  top: 102%;
   left: 0;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(10, 9, 9, 0.26);
 }
 
 .background-color-gray{
@@ -97,11 +101,18 @@ a{
   min-height: calc(100vh - 57px);
 }
 
-.category_title{
+.category_title_list{
   padding-top: 8vh;
+}
+
+.category_title{
+  font-size: 0.8rem;
+  margin: 0 2px;
+  padding: 5px 15px;
   font-weight: 400;
   margin-bottom: 8vh;
   text-transform: uppercase;
+  background-color: white;
 }
 
 .card{
@@ -199,19 +210,28 @@ a{
   text-transform: uppercase;
 }
 
+.button-primary:hover{
+  cursor: pointer;
+}
+
 .product_description{
   font-size: 0.8rem;
 }
 
 .cart_product_card{
+ padding: 15px;
+}
+
+.card_border{
   border-top: 1px solid rgba(128, 128, 128, 0.5);
   border-bottom: 1px solid rgba(128, 128, 128, 0.5);
-  padding: 15px 0;
+
 }
 
 .image_thumbnail > img{
-  width: 150px;
-  height: 200px;
+  width: 120px;
+  height: 150px;
+  object-fit: contain;
 }
 
 .image_thumbnail > button{
@@ -223,17 +243,26 @@ a{
 }
 
 .btn_next{
-  top: 85%;
-  left: 70%;
+  top: 75%;
+  left: 60%;
 }
 
 .btn_prev{
-  top: 85%;
-  left: 85%;
+  top: 75%;
+  left: 80%;
+}
+
+.product_brand{
+  font-size: 1.2rem;
+}
+
+.product_name{
+  font-size: 1rem;
+  font-weight: 400;
 }
 
 .cart_item_subtitle{
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   font-weight: 700;
   margin-top: 8px;
   margin-bottom: 4px;
@@ -249,7 +278,7 @@ a{
   font-size: 0.6rem;
   text-align: center;
   padding: 5px 0;
-  width: 40px;
+  width: 20px;
 }
 
 .cart_item_color{
@@ -259,8 +288,8 @@ a{
 
 .cart_item_color > div{
   display: flex;
-  height: 25px;
-  width: 25px;
+  height: 15px;
+  width: 15px;
   border: 1px solid black;
 }
 
@@ -281,6 +310,19 @@ a{
   width: 25px;
 }
 
+.category_title,
+.header_cart,
+.header_currency,
+.Nav_list_items,
+.product_size > div,
+.product_color > div,
+.cart_item_size > div, 
+.cart_item_color,
+.qty_change > button ,
+.image_thumbnail > button:hover{
+  cursor: pointer;
+}
+
 .tax{
   margin-right: 8px;
 }
@@ -291,7 +333,21 @@ a{
 
 
 .fCalc{
-  margin-top: 20px;
+  margin-top: 50px;
   width: 14vw;
+}
+
+.cartOverlay{
+  top: 105%;
+  left: calc(-30vw + 36px);
+  background-color: white;
+  width: 30vw;
+  z-index: 100;
+  box-shadow: 0 0 10px rgba(10, 9, 9, 0.26);
+}
+
+.cartOverlay_description{
+  padding: 0 15px;
+  padding-top: 10px;
 }
 

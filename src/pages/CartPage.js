@@ -8,7 +8,7 @@ function CartPage() {
         <Header />
         <section className='container'>
             <h2 className='category_title'>Cart</h2>
-            <CartProductCard />
+             <hr/><CartProductCard /><hr/>
             <div className="fCalc fontSize">
                 <p>Tax<span className='price tax'> 21%:</span><small className='bold'> $</small><span className='cart_item_price bold'>42.00</span></p>
                 <p>Quantity:<span className='cart_item_price bold'> 3</span></p>
