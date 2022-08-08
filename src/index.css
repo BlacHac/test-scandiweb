@@ -1,0 +1,297 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+.container{
+  padding: 0 8vw;
+}
+
+.bold{
+  font-weight: 600;
+}
+
+.d-flex{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.relative{
+  position: relative;
+}
+
+.absolute{
+  position: absolute;
+}
+
+a{
+  text-decoration: none;
+  color: black;
+}
+
+.align-center{
+  align-items: center;
+}
+
+.space-between{
+  justify-content: space-between;
+}
+
+.space-even{
+  justify-content: space-even;
+}
+
+.list{
+  list-style: none;
+}
+
+.Nav_list_items{
+  padding: 20px 15px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.Nav_list_items:hover{
+  color: green;
+  border-bottom: 2px solid green;
+}
+
+.header_cart{
+  margin-left: 20px;
+}
+
+.logo{
+  width: 40px;
+  object-fit: contain;
+}
+
+.header_currency{
+  padding: 15px 10px;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.currency_list{
+  font-size: 0.8rem;
+  width: 200%;
+  padding: 5px 3px;
+  background-color: white;
+  box-shadow: 0 0 2px white;
+}
+
+.currency_list:hover{
+  background-color: rgba(223, 194, 194, 0.692);
+}
+
+.currency_list_position{
+  top: 100%;
+  left: 0;
+}
+
+.background-color-gray{
+  background-color: rgba(128, 128, 128, 0.295);
+  min-height: calc(100vh - 57px);
+}
+
+.category_title{
+  padding-top: 8vh;
+  font-weight: 400;
+  margin-bottom: 8vh;
+  text-transform: uppercase;
+}
+
+.card{
+  padding: 10px;
+  background-color: white;
+  width: 270px;
+}
+
+.card_img{
+  width: 250px;
+  height: 280px;
+  object-fit: contain;
+}
+
+.card_title{
+  font-size: 0.9rem;
+  color: gray;
+}
+
+.price{
+  font-weight: 600;
+}
+
+.gap{
+  gap: 80px 150px;
+}
+
+.product_details{
+  margin-top: 8vh;
+}
+
+.image_sm_thumbnail > img{
+  width: 80px;
+  height: 80px;
+  display: block;
+  margin: 20px 0;
+  margin-right: 60px;
+  object-fit: contain;
+}
+
+.image_lg_thumbnail > img{
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+  margin-right: 100px;
+}
+
+.product_details_body{
+  width: 250px;
+}
+
+.product_brand{
+  font-size: 1.7rem;
+}
+
+.product_name{
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.product_subtitle{
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: 25px;
+  margin-bottom: 5px;
+}
+
+.product_size > div {
+  margin-right: 5px;
+  border: 1px solid black;
+  font-size: 0.6rem;
+  text-align: center;
+  padding: 5px 0;
+  width: 40px;
+}
+
+.product_color{
+  gap: 5px;
+}
+
+.product_color > div{
+  height: 25px;
+  width: 25px;
+  border: 1px solid black;
+}
+
+.button-primary{
+  width: 100%;
+  margin: 30px 0;
+  padding: 10px 0;
+  font-size: 0.8rem;
+  color : white;
+  background-color: #5ECE7B;
+  border: none;
+  text-transform: uppercase;
+}
+
+.product_description{
+  font-size: 0.8rem;
+}
+
+.cart_product_card{
+  border-top: 1px solid rgba(128, 128, 128, 0.5);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+  padding: 15px 0;
+}
+
+.image_thumbnail > img{
+  width: 150px;
+  height: 200px;
+}
+
+.image_thumbnail > button{
+  position: absolute;
+  padding: 0 2px;
+  color: white;
+  background-color: black;
+  font-weight: 600;
+}
+
+.btn_next{
+  top: 85%;
+  left: 70%;
+}
+
+.btn_prev{
+  top: 85%;
+  left: 85%;
+}
+
+.cart_item_subtitle{
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.cart_item_size{
+  display: flex;
+}
+
+.cart_item_size > div {
+  margin-right: 5px;
+  border: 1px solid black;
+  font-size: 0.6rem;
+  text-align: center;
+  padding: 5px 0;
+  width: 40px;
+}
+
+.cart_item_color{
+  display: flex;
+  gap: 5px;
+}
+
+.cart_item_color > div{
+  display: flex;
+  height: 25px;
+  width: 25px;
+  border: 1px solid black;
+}
+
+.cart_item_cardLeft{
+  display: flex;
+  gap: 20px;
+}
+
+.qty_change{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qty_change > button {
+  height: 25px;
+  width: 25px;
+}
+
+.tax{
+  margin-right: 8px;
+}
+
+.total{
+  margin-right: 28px;
+}
+
+
+.fCalc{
+  margin-top: 20px;
+  width: 14vw;
+}
+
