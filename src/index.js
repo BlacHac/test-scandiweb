@@ -12,7 +12,9 @@ const ProductData = new ApolloClient({
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
-    <ApolloProvider client={ProductData}>
-        <App />
-    </ApolloProvider>
+    //<React.StrictMode>
+        <ApolloProvider client={ProductData}>
+            <App />
+        </ApolloProvider>
+    //</React.StrictMode>
 );

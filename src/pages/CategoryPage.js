@@ -1,31 +1,39 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Header from "../components/Header";
 import {Link} from 'react-router-dom';
-import Category_ProductCard from "../components/Category_ProductCard";
+import CategoryProductCard from "../components/Category_ProductCard";
+import {useQuery } from "@apollo/client";
+import {MASTER_DATA} from "../queries/graphqlQueries";
 
 function CategoryPage() {
 
+  const {data, error,loading} = useQuery(MASTER_DATA);
 
+  const [category, setCategory] = useState('tech');
 
-  
+  const productsList = data?.categories.find(cat => cat.name === category);
+
+  if(error) return <h1>Error....</h1>
+  if(loading) return <h1>Loading....</h1>
+
   return (
     <>
         <Header />
         <section className='container background-color-gray'>
           <div className='category_title_list d-flex'>
-            <p className="category_title">all</p>
-            <p className="category_title">clothes</p>
-            <p className="category_title">tech</p>
+            {
+              data?.categories.map(category => <p onClick={()=>setCategory(category.name)} key={category.name} id={category.name} className="category_title">{category.name}</p>)
+            }
           </div>
           <div className='d-flex gap'>
-            <Link to="/product">
-              <Category_ProductCard />
-            </Link>
-            <Category_ProductCard />
-            <Category_ProductCard />
-            <Category_ProductCard />
-            <Category_ProductCard />
-            <Category_ProductCard />
+            { productsList.products.map(product => {
+              return(
+                <Link to={`/product/${product.id}`} key={product.name}>
+                  <CategoryProductCard id={product.id} name={product.name} inStock={product.inStock} image={product.gallery[0]} price={product.prices[0].amount} currency={product.prices[0].currency.symbol} />
+                </Link>
+              )
+            })
+            }
           </div>
         </section>
     </>
@@ -33,3 +41,7 @@ function CategoryPage() {
 }
 
 export default CategoryPage
+
+{/*
+
+*/ }

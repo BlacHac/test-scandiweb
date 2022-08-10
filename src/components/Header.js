@@ -9,9 +9,6 @@ function Header() {
     cartOverlay: false,
   });
 
-  console.log(open.currencyDropdown)
-
-
   const dropDown = (e)=>{
     console.log(e.target)
     if(e.target.id == 'currencies'){

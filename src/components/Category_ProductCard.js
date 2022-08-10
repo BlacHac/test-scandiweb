@@ -1,12 +1,12 @@
 import React from 'react'
 
-function Category_ProductCard() {
+function Category_ProductCard({id, brand, name, inStock, image, price, currency}) {
   return (
-    <div className='card' >
-      <img className="card_img" src="https://i.ebayimg.com/images/g/gfsAAOSwPGhhFmls/s-l1600.jpg" /> 
-      <p className='card_title'>span Leather Doll Dress </p>
+    <div id={id} className='card' >
+      <img className="card_img" src={image} /> 
+      <p className='card_title'>{brand} {name}</p>
       <div className='price'>
-        <small>$</small><span>50.00</span>
+        <small>{currency}</small><span>{price}</span>
       </div>
     </div>
   )

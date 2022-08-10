@@ -1,22 +1,26 @@
+
 import React from 'react'
 import {Link} from 'react-router-dom';
 
-function ProductDetails() {
+function ProductDetails({id, name, brand, image, price, currency, description}) {
 
   return (
     <div className='container d-flex product_details'>
       <div className='image_sm_thumbnail'>
-        <img src="https://m.media-amazon.com/images/I/71eMTvCGloL._AC_UX425_.jpg"  />
-        <img src="https://m.media-amazon.com/images/I/71eMTvCGloL._AC_UX425_.jpg"  />
-        <img src="https://m.media-amazon.com/images/I/71eMTvCGloL._AC_UX425_.jpg"  />
+        { image.slice(1).map(image =>{
+          return (
+              <img key={image} src={image} />
+            )
+          })
+        }
       </div>
       <div className='image_lg_thumbnail'>
-        <img src="https://m.media-amazon.com/images/I/71eMTvCGloL._AC_UX425_.jpg"  />
+        <img src={image[0]}  />
       </div>
       <div className='product_details_body'>
         <div>
-          <p className="product_brand bold" >Apollo</p>
-          <p className="product_name">Running Short</p>
+          <p className="product_brand bold" >{brand}</p>
+          <p className="product_name">{name}</p>
         </div>
         <div>
           <p className="product_subtitle">SIZE:</p>
@@ -45,14 +49,14 @@ function ProductDetails() {
         </div> 
         <div>  
           <p className="product_subtitle">PRICE:</p>
-          <p className="price"><small>$</small><span>50.00</span></p>
+          <p className="price"><small>{currency}</small><span>{price}</span></p>
         </div>
         <Link to='/cart'>
           <button className="button-primary" >Add to cart</button>
         </Link>
-        <p className="product_description">
-          lorem ipsum dolor sit amet, consect adipiscing lorem lorem ipsum dolor sit amet, consectetur adipiscing lorem
-        </p>
+        <div className="product_description">
+          {description}
+        </div>
       </div>
     </div>
   )
