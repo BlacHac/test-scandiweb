@@ -20,6 +20,10 @@
   flex-wrap: wrap;
 }
 
+.column{
+  flex-direction: column;
+}
+
 .relative{
   position: relative;
 }
@@ -144,20 +148,26 @@ a{
   margin-top: 8vh;
 }
 
+.image_sm_thumbnail{
+  max-height: 70vh;
+  margin-right: 100px;
+}
+
 .image_sm_thumbnail > img{
   width: 80px;
   height: 80px;
-  display: block;
-  margin: 20px 0;
-  margin-right: 60px;
+  margin: 10px;
   object-fit: contain;
+}
+
+.image_lg_thumbnail{
+  margin-right: 100px;
 }
 
 .image_lg_thumbnail > img{
   width: 400px;
   height: 400px;
   object-fit: contain;
-  margin-right: 100px;
 }
 
 .product_details_body{

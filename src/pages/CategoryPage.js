@@ -9,7 +9,7 @@ function CategoryPage() {
 
   const {data, error,loading} = useQuery(MASTER_DATA);
 
-  const [category, setCategory] = useState('tech');
+  const [category, setCategory] = useState('all');
 
   const productsList = data?.categories.find(cat => cat.name === category);
 
@@ -29,7 +29,9 @@ function CategoryPage() {
             { productsList.products.map(product => {
               return(
                 <Link to={`/product/${product.id}`} key={product.name}>
-                  <CategoryProductCard id={product.id} name={product.name} inStock={product.inStock} image={product.gallery[0]} price={product.prices[0].amount} currency={product.prices[0].currency.symbol} />
+                  <CategoryProductCard id={product.id} brand={product.brand} name={product.name} 
+                  inStock={product.inStock} image={product.gallery[0]} price={product.prices[0]} 
+                   />
                 </Link>
               )
             })
