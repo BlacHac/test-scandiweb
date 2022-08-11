@@ -45,8 +45,8 @@ a{
   justify-content: space-between;
 }
 
-.space-even{
-  justify-content: space-even;
+.space-evenly{
+  justify-content: space-evenly;
 }
 
 .list{
@@ -86,7 +86,7 @@ a{
 
 .currency_list{
   font-size: 0.8rem;
-  padding: 7px;
+  padding: 7px 0;
 }
 
 .currency_list:hover{
@@ -98,6 +98,8 @@ a{
   left: 0;
   background-color: white;
   box-shadow: 0 0 10px rgba(10, 9, 9, 0.26);
+  width: 70px;
+  z-index: 100;
 }
 
 .background-color-gray{
@@ -123,6 +125,19 @@ a{
   padding: 10px;
   background-color: white;
   width: 270px;
+  position: relative;
+}
+
+.outOfStock{
+  top: 0;
+  left: 0;
+  text-transform: uppercase;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(128, 128, 128, 0.452);
+  justify-content: center;
+  font-size: 1.8rem;
+  color: rgb(230, 218, 218);
 }
 
 .card_img{
@@ -226,6 +241,12 @@ a{
 
 .product_description{
   font-size: 0.8rem;
+}
+
+.cart_title{
+  font-size: 1.5rem;
+  margin: 5vh 0;
+  font-weight: 500;
 }
 
 .cart_product_card{
@@ -354,10 +375,27 @@ a{
   width: 30vw;
   z-index: 100;
   box-shadow: 0 0 10px rgba(10, 9, 9, 0.26);
+  padding: 20px 0;
 }
 
-.cartOverlay_description{
-  padding: 0 15px;
-  padding-top: 10px;
+.cartOverlay_padding{
+  padding: 15px;
+}
+
+.cartOverlay_btn{
+  width: 120px;
+  height: 40px;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.cartOverlay_btn:nth-child(2){
+  background-color: #5ECE7B;
+  color: white;
+  border: none;
+}
+
+.cartOverlay_btn:nth-child(2):hover{
+  cursor: pointer;
 }
 

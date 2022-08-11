@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
 import CartOverlay from './CartOverlay';
+import {CURRENCY} from '../queries/graphqlQueries';
+import { useQuery } from '@apollo/client';
 
 function Header() {
+
+  const {data, error,loading } = useQuery(CURRENCY)
 
   const [open, setOpen] = useState({
     currencyDropdown: false,
@@ -10,7 +14,6 @@ function Header() {
   });
 
   const dropDown = (e)=>{
-    console.log(e.target)
     if(e.target.id == 'currencies'){
       setOpen(prevOpen =>{
         return {
@@ -28,6 +31,9 @@ function Header() {
       }
     }
 
+  if(error) return <h1>Error....</h1>
+  if(loading) return <h1>Loading....</h1>
+
   return (
 
     <header>
@@ -42,12 +48,16 @@ function Header() {
         </Link>
         <div className="d-flex align-center">
           <div className="bold relative header_currency">
-            <small id="currencies" onClick={dropDown} className="header_currency" >$</small>
+            <small id="currencies" onClick={dropDown} className="header_currency" >{data?.currencies[0].symbol}</small>
             { open.currencyDropdown &&
               <ul className="list absolute currency_list_position">
-                <li className="currency_list">$ USD</li>
-                <li className="currency_list">$ USD</li>
-                <li className="currency_list">$ USD</li>
+                { data?.currencies.slice(1).map(currency =>{
+                  return (
+                    <li key={currency.label} id={currency.label} className="currency_list">{currency.symbol} {currency.label}</li>
+                  )
+                })
+
+                }
               </ul>
             }
           </div>

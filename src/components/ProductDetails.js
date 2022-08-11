@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 
 function ProductDetails({id, name, brand, image, price, description, attributes}) {
 
+
   return (
     <div className='container d-flex product_details'>
       <div className='image_sm_thumbnail d-flex column'>
@@ -33,7 +34,6 @@ function ProductDetails({id, name, brand, image, price, description, attributes}
                       <div key={item.id} style={{backgroundColor:`${item.value}`}}></div>
                     )
                   })
-
                   }
                 </div>
               </div> 
@@ -61,9 +61,7 @@ function ProductDetails({id, name, brand, image, price, description, attributes}
           <p className="product_subtitle">PRICE:</p>
           <p className="price"><small>{price.currency.symbol}</small><span>{price.amount}</span></p>
         </div>
-        <Link to='/cart'>
-          <button className="button-primary" >Add to cart</button>
-        </Link>
+        <button className="button-primary" >Add to cart</button>
         <div className="product_description">
           {description}
         </div>

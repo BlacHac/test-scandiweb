@@ -13,32 +13,43 @@ function App() {
 
   
 
+
+
+
+
+
+
+
+
+
+
   if(error) return <h1>Error....</h1>
   if(loading) return <h1>Loading....</h1>
 
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route>
-            <Route path={'/'} element={<CategoryPage />} />
-            { data.categories[0].products.map(product =>{
-              return(
-                <Route key={product.id} path={`/product/${product.id}`} 
-                element={<ProductDetailsPage id={product.id} name={product.name} brand={product.brand}
-                inStock={product.inStock} image={product.gallery} price={product.prices[0]} 
-                description={product.description} attributes={product.attributes}
-                 />} />
-              )
-            })
-
-            }
-            <Route path={'/cart'} element={<CartPage />} />
-          </Route>
-        </Routes>
-      </Router>
-    </>
-  );
+      <>
+        <Router>
+          <Routes>
+            <Route>
+              <Route path={'/'} element={<CategoryPage />} />
+              { data.categories[0].products.map(product =>{
+                return(
+                  <Route key={product.id} path={`/product/${product.id}`} 
+                  element={<ProductDetailsPage id={product.id} name={product.name} brand={product.brand}
+                  inStock={product.inStock} image={product.gallery} price={product.prices[0]} 
+                  description={product.description} attributes={product.attributes}
+                  />} />
+                  )
+                })
+              }
+              <Route path={'/cart'} element={<CartPage />} />
+            </Route>
+          </Routes>
+        </Router>
+      </>
+  );  
 }
 
 export default App;
+
+

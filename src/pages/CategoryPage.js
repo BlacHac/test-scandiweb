@@ -27,14 +27,16 @@ function CategoryPage() {
           </div>
           <div className='d-flex gap'>
             { productsList.products.map(product => {
-              return(
-                <Link to={`/product/${product.id}`} key={product.name}>
-                  <CategoryProductCard id={product.id} brand={product.brand} name={product.name} 
-                  inStock={product.inStock} image={product.gallery[0]} price={product.prices[0]} 
-                   />
-                </Link>
-              )
-            })
+               return (product.inStock ?
+                        <Link to={`/product/${product.id}`} key={product.name}>
+                            <CategoryProductCard id={product.id} brand={product.brand} name={product.name} 
+                            inStock={product.inStock} image={product.gallery[0]} price={product.prices[0]} />
+                        </Link> 
+                      :
+                        <CategoryProductCard key={product.name} id={product.id} brand={product.brand} name={product.name} 
+                        inStock={product.inStock} image={product.gallery[0]} price={product.prices[0]} />
+                      )
+              })
             }
           </div>
         </section>
