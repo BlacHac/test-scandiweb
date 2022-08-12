@@ -13,8 +13,8 @@ function CategoryPage() {
 
   const productsList = data?.categories.find(cat => cat.name === category);
 
-  if(error) return <h1>Error....</h1>
-  if(loading) return <h1>Loading....</h1>
+  if (error) return <h1>Error....</h1>
+  if (loading) return <h1>Loading....</h1>
 
   return (
     <>

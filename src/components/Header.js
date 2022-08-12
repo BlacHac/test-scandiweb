@@ -1,17 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {Link} from 'react-router-dom';
 import CartOverlay from './CartOverlay';
 import {CURRENCY} from '../queries/graphqlQueries';
 import { useQuery } from '@apollo/client';
+import currencyContext from '../context/CurrencyContext'
 
-function Header() {
 
-  const {data, error,loading } = useQuery(CURRENCY)
+function Header({quantity}) {
+
+  const {data} = useQuery(CURRENCY)
 
   const [open, setOpen] = useState({
     currencyDropdown: false,
     cartOverlay: false,
   });
+
+  const {currency, setCurrency} = useContext(currencyContext);
+  const selectedCurrency = data?.currencies.find(_currency => _currency.label === currency);
+  const currencyDropdownList = data?.currencies.filter(_currency => _currency.label != selectedCurrency?.label);
 
   const dropDown = (e)=>{
     if(e.target.id == 'currencies'){
@@ -31,9 +37,6 @@ function Header() {
       }
     }
 
-  if(error) return <h1>Error....</h1>
-  if(loading) return <h1>Loading....</h1>
-
   return (
 
     <header>
@@ -48,12 +51,12 @@ function Header() {
         </Link>
         <div className="d-flex align-center">
           <div className="bold relative header_currency">
-            <small id="currencies" onClick={dropDown} className="header_currency" >{data?.currencies[0].symbol}</small>
+            <small id="currencies" onClick={dropDown} className="header_currency" >{selectedCurrency?.symbol}</small>
             { open.currencyDropdown &&
               <ul className="list absolute currency_list_position">
-                { data?.currencies.slice(1).map(currency =>{
+                { currencyDropdownList?.map(currency =>{
                   return (
-                    <li key={currency.label} id={currency.label} className="currency_list">{currency.symbol} {currency.label}</li>
+                    <li onClick={()=> setCurrency(currency.label)} key={currency.label} id={currency.label} className="currency_list">{currency.symbol} {currency.label}</li>
                   )
                 })
 
@@ -62,6 +65,9 @@ function Header() {
             }
           </div>
           <div className="relative">
+            <div className="absolute cart_QTYbadge">
+              0
+            </div>
             <img onClick={dropDown} className="header_cart" src="../images/cart.svg" />
             { open.cartOverlay &&
               <CartOverlay />
@@ -69,20 +75,8 @@ function Header() {
           </div>
         </div>
       </div>
-      
     </header>
-
-
-
-
-
-
   )
 }
 
 export default Header
-
-
-{/*
-            
-*/}

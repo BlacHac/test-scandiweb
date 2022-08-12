@@ -399,3 +399,12 @@ a{
   cursor: pointer;
 }
 
+.cart_QTYbadge{
+  background-color: black;
+  color: white;
+  padding: 2px 6px;
+  font-size: 0.7rem;
+  border-radius: 50%;
+  left: 50%;
+  top: 20%;
+}
