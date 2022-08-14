@@ -121,6 +121,11 @@ a{
   background-color: white;
 }
 
+.selected{
+  background-color: black;
+  color: white;
+}
+
 .card{
   padding: 10px;
   background-color: white;

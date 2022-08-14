@@ -25,7 +25,7 @@ function App() {
                 return(
                   <Route key={product.id} path={`/product/${product.id}`} 
                   element={<ProductDetailsPage id={product.id} name={product.name} brand={product.brand}
-                  inStock={product.inStock} image={product.gallery} price={product.prices[0]} 
+                  inStock={product.inStock} image={product.gallery} price={product.prices} 
                   description={product.description} attributes={product.attributes} />} />
                   )
                 })

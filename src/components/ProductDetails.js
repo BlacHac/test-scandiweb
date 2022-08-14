@@ -1,10 +1,13 @@
-
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
+import currencyContext from '../context/CurrencyContext';
 
 function ProductDetails({id, name, brand, image, price, description, attributes}) {
 
   const [productImage, setProductImage] = useState(image[0]);
   const smallThumbnailImage = image?.filter(_image => _image != productImage) ;
+
+  const {currency} = useContext(currencyContext)
+  const selectedCurrency = price?.find(_currency => _currency.currency.label === currency) ;
 
   return (
     <div className='container d-flex product_details'>
@@ -60,12 +63,10 @@ function ProductDetails({id, name, brand, image, price, description, attributes}
         }
         <div>  
           <p className="product_subtitle">PRICE:</p>
-          <p className="price"><small>{price.currency.symbol}</small><span>{price.amount}</span></p>
+          <p className="price"><small>{selectedCurrency.currency.symbol}</small><span>{selectedCurrency.amount}</span></p>
         </div>
         <button id={id} className="button-primary" >Add to cart</button>
-        <div className="product_description">
-          {description}
-        </div>
+        <div className="product_description" dangerouslySetInnerHTML={{__html:description}} />
       </div>
     </div>
   )

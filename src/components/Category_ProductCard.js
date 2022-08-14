@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react';
+import currencyContext from '../context/CurrencyContext';
 
 function Category_ProductCard({id, brand, name, inStock, image, price}) {
+  
+  const {currency} = useContext(currencyContext);
+  const selectedCurrency = price?.find(_currency => _currency.currency.label === currency) ;
 
   const noStockColor = inStock ? 'gray' : 'rgba(128, 128, 128, 0.6)';
 
@@ -9,7 +13,7 @@ function Category_ProductCard({id, brand, name, inStock, image, price}) {
       <img className="card_img" src={image} /> 
       <p className='card_title' style={{color:`${noStockColor}`}} >{brand} {name}</p>
       <div className='price' style={{color:`${noStockColor}`}}>
-        <small>{price.currency.symbol}</small><span>{price.amount}</span>
+        <small>{selectedCurrency.currency.symbol}</small><span>{selectedCurrency.amount}</span>
       </div>
       { !inStock &&
         <div className='bold absolute outOfStock d-flex align-center'>
