@@ -4,6 +4,7 @@ import CartOverlay from './CartOverlay';
 import {CURRENCY} from '../queries/graphqlQueries';
 import { useQuery } from '@apollo/client';
 import currencyContext from '../context/CurrencyContext'
+import {basketContext} from '../context/BasketContext'
 
 
 function Header({quantity}) {
@@ -37,6 +38,13 @@ function Header({quantity}) {
       }
     }
 
+    const {basket} = useContext(basketContext);
+    
+    let totalQuantity = 0;
+    basket.forEach(_product => {
+      totalQuantity += _product.qty
+    })
+
   return (
 
     <header>
@@ -65,9 +73,11 @@ function Header({quantity}) {
             }
           </div>
           <div className="relative">
-            <div className="absolute cart_QTYbadge">
-              0
-            </div>
+            { totalQuantity > 0 &&
+              <div className="absolute cart_QTYbadge">
+                {totalQuantity}
+              </div>
+            }
             <img onClick={dropDown} className="header_cart" src="../images/cart.svg" />
             { open.cartOverlay &&
               <CartOverlay />

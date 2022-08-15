@@ -1,5 +1,6 @@
 import React, {useState, useContext} from 'react'
 import currencyContext from '../context/CurrencyContext';
+import {basketContext} from '../context/BasketContext';
 
 function ProductDetails({id, name, brand, image, price, description, attributes}) {
 
@@ -8,6 +9,44 @@ function ProductDetails({id, name, brand, image, price, description, attributes}
 
   const {currency} = useContext(currencyContext)
   const selectedCurrency = price?.find(_currency => _currency.currency.label === currency) ;
+
+  const {setBasket} = useContext(basketContext); 
+  const [attributeSelected, setAttributeSelected] = useState({});
+
+  const selectedAttribute = (attributeName, value) => {
+    setAttributeSelected( prevAttributeSelected => {
+      return {
+        ...prevAttributeSelected,
+        [attributeName] : value
+      }
+    })
+  }
+
+  const addToBasket = () => {
+    if(attributes.length === Object.keys(attributeSelected).length){
+      setBasket(prevBasket => {
+        const findProduct = prevBasket.find(_product => _product.id === id && 
+        Object.keys(attributeSelected).every(_attribute => attributeSelected[_attribute] == _product.attributes[_attribute])
+          );
+        if(findProduct){
+            findProduct.qty += 1 ;
+            return [...prevBasket]
+          } else {
+          return [
+            ...prevBasket,
+            {
+              id:id,
+              attributes : attributeSelected,
+              qty : 1
+            }
+          ]
+        }
+      });
+      setAttributeSelected({});
+    } else {
+      alert('Please select an option from each attribute')
+    }
+  }
 
   return (
     <div className='container d-flex product_details'>
@@ -35,7 +74,9 @@ function ProductDetails({id, name, brand, image, price, description, attributes}
                 <div className="product_color d-flex">
                   { attribute.items.map(item =>{
                     return(
-                      <div className={attribute.name} key={item.id} id={item.id} style={{backgroundColor:`${item.value}`}}></div>
+                      <div onClick={()=>selectedAttribute(attribute.name, item.value, item.id)} 
+                      className={attributeSelected[attribute.name] == item.value ? "selectedSwatch" : "" }
+                      key={item.id} id={item.id} style={{backgroundColor:`${item.value}`}}></div>
                     )
                   })
                   }
@@ -49,7 +90,8 @@ function ProductDetails({id, name, brand, image, price, description, attributes}
                 <div className="product_size d-flex">
                   { attribute.items.map( item =>{
                     return(
-                      <div className={attribute.name} key={item.id} id={item.id}>
+                      <div className={attributeSelected[attribute.name] == item.value ? "selected" : "" } 
+                      onClick={()=>selectedAttribute(attribute.name, item.value, item.id)} key={item.id} id={item.id}>
                         {item.value}
                       </div>
                       )
@@ -65,7 +107,7 @@ function ProductDetails({id, name, brand, image, price, description, attributes}
           <p className="product_subtitle">PRICE:</p>
           <p className="price"><small>{selectedCurrency.currency.symbol}</small><span>{selectedCurrency.amount}</span></p>
         </div>
-        <button id={id} className="button-primary" >Add to cart</button>
+        <button onClick={addToBasket} className="button-primary" >Add to cart</button>
         <div className="product_description" dangerouslySetInnerHTML={{__html:description}} />
       </div>
     </div>

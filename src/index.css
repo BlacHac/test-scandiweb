@@ -126,6 +126,11 @@ a{
   color: white;
 }
 
+.selectedSwatch{
+  scale: 1.1;
+  box-shadow: 0 0 5px 3px gray;
+}
+
 .card{
   padding: 10px;
   background-color: white;
@@ -220,7 +225,7 @@ a{
 }
 
 .product_color{
-  gap: 5px;
+  gap: 10px;
 }
 
 .product_color > div{

@@ -3,6 +3,7 @@ import CartProductCard from './Cart_ProductCard'
 import {Link} from "react-router-dom";
 
 function CartOverlay() {
+
   return (
     <div className='absolute cartOverlay'>
         <p className='cartOverlay_padding'><span className='bold'>My Bag,</span><span> 3</span><span> items</span></p>

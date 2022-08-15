@@ -6,6 +6,7 @@ import CartPage from "./pages/CartPage";
 import {useQuery } from "@apollo/client";
 import {MASTER_DATA} from "./queries/graphqlQueries";
 import {CurrencyProvider} from './context/CurrencyContext'
+import BasketProvider from './context/BasketContext';
 
 
 function App() {
@@ -16,25 +17,27 @@ function App() {
   if(loading) return <h1>Loading....</h1>
 
   return (
-      <CurrencyProvider>
-        <Router>
-          <Routes>
-            <Route>
-              <Route path={'/'} element={<CategoryPage />} />
-              { data?.categories[0].products.map(product =>{
-                return(
-                  <Route key={product.id} path={`/product/${product.id}`} 
-                  element={<ProductDetailsPage id={product.id} name={product.name} brand={product.brand}
-                  inStock={product.inStock} image={product.gallery} price={product.prices} 
-                  description={product.description} attributes={product.attributes} />} />
-                  )
-                })
-              }
-              <Route path={'/cart'} element={<CartPage />} />
-            </Route>
-          </Routes>
-        </Router>
-      </CurrencyProvider>
+    <BasketProvider>
+        <CurrencyProvider>
+          <Router>
+            <Routes>
+              <Route>
+                <Route path={'/'} element={<CategoryPage />} />
+                { data?.categories[0].products.map(product =>{
+                  return(
+                    <Route key={product.id} path={`/product/${product.id}`} 
+                    element={<ProductDetailsPage id={product.id} name={product.name} brand={product.brand}
+                    inStock={product.inStock} image={product.gallery} price={product.prices} 
+                    description={product.description} attributes={product.attributes} />} />
+                    )
+                  })
+                }
+                <Route path={'/cart'} element={<CartPage />} />
+              </Route>
+            </Routes>
+          </Router>
+        </CurrencyProvider>
+      </BasketProvider>  
   );  
 }
 
