@@ -7,7 +7,7 @@ import currencyContext from '../context/CurrencyContext'
 import {basketContext} from '../context/BasketContext'
 
 
-function Header({quantity}) {
+function Header() {
 
   const {data} = useQuery(CURRENCY)
 
@@ -18,7 +18,6 @@ function Header({quantity}) {
 
   const {currency, setCurrency} = useContext(currencyContext);
   const selectedCurrency = data?.currencies.find(_currency => _currency.label === currency);
-  const currencyDropdownList = data?.currencies.filter(_currency => _currency.label != selectedCurrency?.label);
 
   const dropDown = (e)=>{
     if(e.target.id == 'currencies'){
@@ -61,8 +60,8 @@ function Header({quantity}) {
           <div className="bold relative header_currency">
             <small id="currencies" onClick={dropDown} className="header_currency" >{selectedCurrency?.symbol}</small>
             { open.currencyDropdown &&
-              <ul className="list absolute currency_list_position">
-                { currencyDropdownList?.map(currency =>{
+              <ul className="list absolute currency_list_position anime">
+                { data?.currencies.map(currency =>{
                   return (
                     <li onClick={()=> setCurrency(currency.label)} key={currency.label} id={currency.label} className="currency_list">{currency.symbol} {currency.label}</li>
                   )

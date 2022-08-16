@@ -5,7 +5,7 @@ export const basketContext = React.createContext({});
 function BasketProvider({children}) {
 
     const [basket, setBasket] = useState([]);
-    console.log(basket)
+    //console.log(basket)
     const value = {basket, setBasket} 
     
     return (

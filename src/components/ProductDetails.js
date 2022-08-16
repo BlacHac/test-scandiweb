@@ -26,17 +26,22 @@ function ProductDetails({id, name, brand, image, price, description, attributes}
     if(attributes.length === Object.keys(attributeSelected).length){
       setBasket(prevBasket => {
         const findProduct = prevBasket.find(_product => _product.id === id && 
-        Object.keys(attributeSelected).every(_attribute => attributeSelected[_attribute] == _product.attributes[_attribute])
+        Object.keys(attributeSelected).every(_attribute => attributeSelected[_attribute] == _product.chosenAttributes[_attribute])
           );
         if(findProduct){
             findProduct.qty += 1 ;
             return [...prevBasket]
           } else {
-          return [
+            return [
             ...prevBasket,
             {
               id:id,
-              attributes : attributeSelected,
+              chosenAttributes : attributeSelected,
+              name: name,
+              brand: brand,
+              image: image,
+              price: price,
+              attributes: attributes,
               qty : 1
             }
           ]
