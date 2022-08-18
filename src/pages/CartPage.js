@@ -6,7 +6,7 @@ import currencyContext from '../context/CurrencyContext';
 
 function CartPage() {
 
-  const {basket} = useContext(basketContext);
+  const {basket, totalQuantity} = useContext(basketContext);
   const {currency} = useContext(currencyContext)
   
   let currency_symbol = '';
@@ -21,9 +21,6 @@ function CartPage() {
   
   let total_final = 0;
     total_eachItem.forEach(_item => total_final += _item)
-
-  let totalQuantity = 0;
-    basket.forEach(_product => totalQuantity += _product.qty)
 
   const tax = total_final * 21 /100 ;  
 

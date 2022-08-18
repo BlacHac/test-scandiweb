@@ -6,13 +6,8 @@ import currencyContext from '../context/CurrencyContext';
 
 function CartOverlay() {
 
-  const {basket} = useContext(basketContext);
+  const {basket, totalQuantity} = useContext(basketContext);
   const {currency} = useContext(currencyContext)
-
-  let totalQuantity = 0;
-    basket.forEach(_product => {
-      totalQuantity += _product.qty
-    })
 
   if (totalQuantity === 0) {
     return <div className='absolute cartOverlay d-flex column align-center'>

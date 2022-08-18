@@ -32,11 +32,11 @@ function CategoryPage() {
                return (product.inStock ?
                         <Link to={`/product/${product.id}`} key={product.name}>
                             <CategoryProductCard id={product.id} brand={product.brand} name={product.name} 
-                            inStock={product.inStock} image={product.gallery[0]} price={product.prices} />
+                            inStock={product.inStock} image={product.gallery} price={product.prices} attribute={product.attributes}/>
                         </Link> 
                       :
                         <CategoryProductCard key={product.name} id={product.id} brand={product.brand} name={product.name} 
-                        inStock={product.inStock} image={product.gallery[0]} price={product.prices} />
+                        inStock={product.inStock} image={product.gallery} price={product.prices} attribute={product.attributes} />
                       )
               })
             }

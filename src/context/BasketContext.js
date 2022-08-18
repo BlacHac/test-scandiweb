@@ -6,7 +6,10 @@ function BasketProvider({children}) {
 
     const [basket, setBasket] = useState([]);
     //console.log(basket)
-    const value = {basket, setBasket} 
+    let totalQuantity = 0;
+    basket.forEach(_product => totalQuantity += _product.qty)
+
+    const value = {basket, setBasket, totalQuantity} 
     
     return (
         <basketContext.Provider value={value}>

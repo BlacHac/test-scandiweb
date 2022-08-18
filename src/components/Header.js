@@ -16,6 +16,8 @@ function Header() {
     cartOverlay: false,
   });
 
+  const {totalQuantity} = useContext(basketContext);
+  
   const {currency, setCurrency} = useContext(currencyContext);
   const selectedCurrency = data?.currencies.find(_currency => _currency.label === currency);
 
@@ -36,13 +38,6 @@ function Header() {
       })
       }
     }
-
-    const {basket} = useContext(basketContext);
-    
-    let totalQuantity = 0;
-    basket.forEach(_product => {
-      totalQuantity += _product.qty
-    })
 
   return (
 
@@ -73,7 +68,7 @@ function Header() {
           </div>
           <div className="relative">
             { totalQuantity > 0 &&
-              <div className="absolute cart_QTYbadge">
+              <div className="absolute qty_badge">
                 {totalQuantity}
               </div>
             }
