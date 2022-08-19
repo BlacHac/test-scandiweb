@@ -60,7 +60,7 @@ class Cart_ProductCard extends Component {
 
     const updateAttribute = (attributeName, value) => {
         const duplicateProduct = basket.find(_product => _product.id == this.props.id && Object.keys(_product.chosenAttributes)
-        .every(key => {
+        .every(_attribute => {
             return _product.chosenAttributes[_attribute] === (_attribute === attributeName) ? value : this.props.chosenAttributes[_attribute]
         }))
 
