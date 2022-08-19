@@ -1,130 +1,159 @@
-import React, {useContext, useState} from 'react'
-import currencyContext from '../context/CurrencyContext';
-import {basketContext} from '../context/BasketContext';
+import React, {Component} from 'react'
+import {dataLayer} from '../context/DataContext';
 
-function Cart_ProductCard({id, chosenAttributes, name, brand, image, price, attributes, qty}) {
+class Cart_ProductCard extends Component {
 
-    const {currency} = useContext(currencyContext)
-    const selectedCurrency = price?.find(_currency => _currency.currency.label === currency) ;
-
-    const {basket, setBasket} = useContext(basketContext)
-    const [attributeSelected, setAttributeSelected] = useState(chosenAttributes);
-    const [imageIndex, setImageIndex] = useState(0);
-
-    const findProduct = basket.find(_product => {
-        return _product.id == id && Object.keys(chosenAttributes).every(_attribute => _product.chosenAttributes[_attribute] == chosenAttributes[_attribute]);
-    })
-
-    const updateAttribute = (attributeName, value) => {
-        setBasket(prevBasket => {
-            findProduct.chosenAttributes[attributeName] = value ;
-            return [...prevBasket]
-        });
+    constructor(props){
+        super(props)
+        this.state = {
+            attributeSelected : props.attributeSelected,
+            imageIndex : 0,
+            removeMessage : false
+        }
     }
+    
+    static contextType = dataLayer
 
-    const nextImage = () => {
-        setImageIndex(prevImageIndex => {
-            return prevImageIndex === image.length - 1 ? 0 : prevImageIndex + 1
+    nextImage = () => {
+        this.setState((state, props) => {
+            return state.imageIndex === props.image.length - 1 ? {imageIndex : 0} : {imageIndex : state.imageIndex + 1}
         })
     }
     
-    const prevImage = () => {
-        setImageIndex(prevImageIndex => {
-            return prevImageIndex === 0 ? image.length - 1 : prevImageIndex - 1
+    prevImage = () => {
+        this.setState((state, props) => {
+            return state.imageIndex === 0 ? {imageIndex : props.image.length - 1} : {imageIndex : state.imageIndex - 1}
         })
     }
 
+    removeMessageShow = () => {
+        this.setState(() => {
+            return {
+                removeMessage : true
+            }
+        })
+    }
+
+    dontRemove = () => {
+        this.setState(() => {
+            return {
+                removeMessage : false
+            }
+        })
+    }
+
+  render(){
+
+    const {basket, currency, updateBasket} = this.context
+
+    const selectedCurrency = this.props.price?.find(_currency => _currency.currency.label === currency) ;
+
+    const findProduct = basket.find(_product => {
+        return _product.id == this.props.id && Object.keys(this.props.chosenAttributes).every(_attribute => _product.chosenAttributes[_attribute] == this.props.chosenAttributes[_attribute]);
+    })
+    
     const increaseQuantity = () => {
-        setBasket(prevBasket => {
-            findProduct.qty += 1 ;
-            return [...prevBasket]
-        });
+        findProduct.qty += 1 ;
+        updateBasket ([...basket])
     }
 
     const decreaseQuantity = () => {
-        if(qty === 1){
-            setBasket(prevBasket => {
-                const afterRemovedProduct = prevBasket.filter(_product => _product != findProduct);
-                return afterRemovedProduct
-            });
+        if(this.props.qty === 1){
+            this.removeMessageShow()
         } else {
-            setBasket(prevBasket => {
-                findProduct.qty -= 1 ;
-                return [...prevBasket]
-            });
+            findProduct.qty -= 1 ;
+            updateBasket ([...basket])
         }
     }
 
+    const updateAttribute = (attributeName, value) => {
+        findProduct.chosenAttributes[attributeName] = value ;
+        updateBasket ([...basket])
+    }
 
-  return (
-    <div className='cart_product_card d-flex space-between'>
-        <div>
-            <div>
-                <p className="product_brand" >{brand}</p>
-                <p className="product_name">{name}</p>
-            </div>
-            <div>  
-                <p className="price"><small>{selectedCurrency?.currency.symbol}</small><span>{selectedCurrency?.amount}</span></p>
-            </div>
-            { attributes.map(attribute =>{
-                if (attribute.type === 'swatch') {
-                    return (
-                    <div key={attribute.id}>     
-                        <p className="cart_item_subtitle">{attribute.name}:</p>
-                        <div className="cart_item_color d-flex">
-                        { attribute.items.map(item =>{
-                            return(
-                            <div onClick={()=>updateAttribute(attribute.name, item.value, item.id)}
-                            className={attributeSelected[attribute.name] == item.value ? "selectedSwatch" : ""}
-                            key={item.id} id={item.id} style={{backgroundColor:`${item.value}`}}></div>
+    const removeProduct = () => {
+        const afterRemovedProduct = basket.filter(_product => _product != findProduct);
+        updateBasket ([...afterRemovedProduct])
+    }
+
+    return (
+        <>
+            <div className='cart_product_card d-flex space-between'>
+                <div>
+                    <div>
+                        <p className="product_brand" >{this.props.brand}</p>
+                        <p className="product_name">{this.props.name}</p>
+                    </div>
+                    <div>  
+                        <p className="price"><small>{selectedCurrency?.currency.symbol}</small><span>{selectedCurrency?.amount}</span></p>
+                    </div>
+                    { this.props.attributes.map(attribute =>{
+                        if (attribute.type === 'swatch') {
+                            return (
+                            <div key={attribute.id}>     
+                                <p className="cart_item_subtitle">{attribute.name}:</p>
+                                <div className="cart_item_color d-flex">
+                                { attribute.items.map(item =>{
+                                    return(
+                                    <div onClick={()=>updateAttribute(attribute.name, item.value, item.id)}
+                                    className={this.props.chosenAttributes[attribute.name] == item.value ? "selectedSwatch" : ""}
+                                    key={item.id} id={item.id} style={{backgroundColor:`${item.value}`}}></div>
+                                    )
+                                })
+                                }
+                                </div>
+                            </div> 
                             )
-                        })
-                        }
-                        </div>
-                    </div> 
-                    )
-                } else {
-                    return (
-                    <div key={attribute.id}>
-                        <p className="cart_item_subtitle">{attribute.name}:</p>
-                        <div className="cart_item_size d-flex">
-                        { attribute.items.map( item =>{
-                            return(
-                            <div onClick={()=>updateAttribute(attribute.name, item.value, item.id)}
-                            className={chosenAttributes[attribute.name] == item.value ? "selected" : ""}
-                            key={item.id} id={item.id}>
-                                {item.value}
+                        } else {
+                            return (
+                            <div key={attribute.id}>
+                                <p className="cart_item_subtitle">{attribute.name}:</p>
+                                <div className="cart_item_size d-flex">
+                                { attribute.items.map( item =>{
+                                    return(
+                                    <div onClick={()=>updateAttribute(attribute.name, item.value, item.id)}
+                                    className={this.props.chosenAttributes[attribute.name] == item.value ? "selected" : ""}
+                                    key={item.id} id={item.id}>
+                                        {item.value}
+                                    </div>
+                                    )
+                                    })
+                                }
+                                </div>
                             </div>
                             )
-                            })
-                        }
-                        </div>
-                    </div>
-                    )
+                            }
+                        })
                     }
-                })
+                </div>
+                <div className="cart_item_cardLeft">
+                    <div className='qty_change'>
+                        <button onClick={increaseQuantity} >+</button> 
+                        <span>{this.props.qty}</span>
+                        <button onClick={decreaseQuantity}>-</button> 
+                    </div>
+                    <div className='image_thumbnail relative'>
+                        <img src={this.props.image[this.state.imageIndex]}  />
+                        { this.props.image.length > 1 &&
+                            <>
+                                <button onClick={this.prevImage} className='btn_next' >{"<"}</button>
+                                <button onClick={this.nextImage} className='btn_prev' >{">"}</button>
+                            </>
+                        }
+                    </div>
+                    <button onClick={removeProduct} className="remove_product"> <img src="../images/x.svg" /> </button>
+                </div>
+            </div>
+            {   this.state.removeMessage &&
+                <div className='d-flex removeMessage bold'>
+                    <p>Do you want to remove this item ?</p>
+                    <button onClick={removeProduct} className="bold">Yes</button>
+                    <button onClick={this.dontRemove} className="bold">No</button>
+                </div>
             }
-        </div>
-        <div className="cart_item_cardLeft">
-            <div className='qty_change'>
-                <button onClick={increaseQuantity} >+</button> 
-                <span>{qty}</span>
-                <button onClick={decreaseQuantity}>-</button> 
-            </div>
-            <div className='image_thumbnail relative'>
-                <img src={image[imageIndex]}  />
-                { image.length > 1 &&
-                    <>
-                        <button onClick={prevImage} className='btn_next' >{"<"}</button>
-                        <button onClick={nextImage} className='btn_prev' >{">"}</button>
-                    </>
-                }
-            </div>
-        </div>
-    </div>
-
-
-  )
+        </>
+    )
+  }
 
 }
 

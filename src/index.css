@@ -437,3 +437,23 @@ a{
 .cart_badge img{
   width: 15px
 }
+
+.remove_product{
+  height: 20px;
+  width: 20px;
+}
+
+.remove_product img{
+  width: 15px;
+}
+
+.removeMessage{
+  justify-content: center;
+  margin-bottom: 5px;
+  gap: 10px;
+}
+
+.removeMessage button{
+  padding: 2px 5px;
+  
+}

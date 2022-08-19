@@ -1,20 +1,15 @@
-import React, { useContext } from 'react'
+import React, { Component } from 'react'
 import CartProductCard from './Cart_ProductCard'
 import {Link} from 'react-router-dom';
-import {basketContext} from '../context/BasketContext';
-import currencyContext from '../context/CurrencyContext';
+import {dataLayer} from '../context/DataContext';
 
-function CartOverlay() {
+class CartOverlay extends Component{
 
-  const {basket, totalQuantity} = useContext(basketContext);
-  const {currency} = useContext(currencyContext)
+  static contextType = dataLayer
 
-  if (totalQuantity === 0) {
-    return <div className='absolute cartOverlay d-flex column align-center'>
-            <h3 className="emptyCart_title">Empty Cart</h3>
-            <img className="emptyCart_image" src="../images/empty_cart.jpeg" alt="No Item Cart" /> 
-          </div>
-  } 
+ render(){
+
+  const {basket, currency, totalQuantity} = this.context
 
   let currency_symbol = '';
   const total_eachItem = basket.map(_product => {
@@ -25,10 +20,19 @@ function CartOverlay() {
       }
     }).find(_item => _item)
   });
-  
+
   let total_final = 0;
     total_eachItem.forEach(_item => total_final += _item)
-  
+
+  if (totalQuantity === 0) {
+    return (
+          <div className='absolute cartOverlay d-flex column align-center'>
+            <h3 className="emptyCart_title">Empty Cart</h3>
+            <img className="emptyCart_image" src="../images/empty_cart.jpeg" alt="No Item Cart" /> 
+          </div>
+    )
+  } 
+
   return (
     <div className='absolute cartOverlay'>
         <p className='cartOverlay_padding'><span className='bold'>My Bag, </span><span>{totalQuantity}</span><span> item{totalQuantity != 1 && "s"}</span></p>
@@ -52,6 +56,7 @@ function CartOverlay() {
         </div>
     </div>
   )
+ }
 }
 
 export default CartOverlay

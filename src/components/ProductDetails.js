@@ -1,122 +1,134 @@
-import React, {useState, useContext} from 'react'
-import currencyContext from '../context/CurrencyContext';
-import {basketContext} from '../context/BasketContext';
+import React, {Component} from 'react'
+import {dataLayer} from '../context/DataContext';
 
-function ProductDetails({id, name, brand, image, price, description, attributes}) {
+class ProductDetails extends Component {
 
-  const [productImage, setProductImage] = useState(image[0]);
-  const smallThumbnailImage = image?.filter(_image => _image != productImage) ;
+  constructor (props) {
+    super (props)
+    this.state = {
+      productImage: props.image[0],
+      attributeSelected: {}
+    }
+  }
 
-  const {currency} = useContext(currencyContext)
-  const selectedCurrency = price?.find(_currency => _currency.currency.label === currency) ;
+  static contextType = dataLayer;
 
-  const {setBasket} = useContext(basketContext); 
-  const [attributeSelected, setAttributeSelected] = useState({});
 
-  const selectedAttribute = (attributeName, value) => {
-    setAttributeSelected( prevAttributeSelected => {
+  selectedAttribute = (attributeName, value) => {
+    this.setState( (state) => {
       return {
-        ...prevAttributeSelected,
-        [attributeName] : value
+        attributeSelected: {...state.attributeSelected,
+          [attributeName] : value
+        }
       }
     })
   }
 
-  const addToBasket = () => {
-    if(attributes.length === Object.keys(attributeSelected).length){
-      setBasket(prevBasket => {
-        const findProduct = prevBasket.find(_product => _product.id === id && 
-        Object.keys(attributeSelected).every(_attribute => attributeSelected[_attribute] == _product.chosenAttributes[_attribute])
-          );
-        if(findProduct){
-            findProduct.qty += 1 ;
-            return [...prevBasket]
-          } else {
-            return [
-            ...prevBasket,
-            {
-              id:id,
-              chosenAttributes : attributeSelected,
-              name: name,
-              brand: brand,
-              image: image,
-              price: price,
-              attributes: attributes,
-              qty : 1
-            }
-          ]
-        }
-      });
-      setAttributeSelected({});
-    } else {
-      alert('Please select an option from each attribute')
-    }
-  }
+  render () {
 
-  return (
-    <div className='container d-flex product_details'>
-      <div className='image_sm_thumbnail d-flex column'>
-        { smallThumbnailImage?.map(image =>{
-          return (
-              <img onClick={() => setProductImage(image) } key={image} src={image} />
-            )
-          })
-        }
-      </div>
-      <div className='image_lg_thumbnail'>
-        <img src={productImage}  />
-      </div>
-      <div className='product_details_body'>
-        <div>
-          <p className="product_brand bold" >{brand}</p>
-          <p className="product_name">{name}</p>
+    const {basket, currency, updateBasket} = this.context
+    const selectedCurrency = this.props.price?.find(_currency => _currency.currency.label === currency) ;
+    const smallThumbnailImage = this.props.image?.filter(_image => _image != this.state.productImage) ;
+
+    const addToBasket = () => {
+      if(this.props.attributes.length === Object.keys(this.state.attributeSelected).length){
+        const findProduct = basket.find(_product => _product.id === this.props.id && 
+          Object.keys(this.state.attributeSelected).every(_attribute => this.state.attributeSelected[_attribute] == _product.chosenAttributes[_attribute])
+            );
+          if(findProduct){
+              findProduct.qty += 1 ;
+              updateBasket ([...basket])
+            } else {
+              updateBasket ([
+              ...basket,
+              {
+                id: this.props.id,
+                chosenAttributes : this.state.attributeSelected,
+                name: this.props.name,
+                brand: this.props.brand,
+                image: this.props.image,
+                price: this.props.price,
+                attributes: this.props.attributes,
+                qty : 1
+              }
+            ])
+          }
+        this.setState( () => {
+          return {
+            attributeSelected: {}
+          }
+        })
+      } else {
+        alert('Please select an option from each attribute')
+      }
+    }
+
+    return (
+      <div className='container d-flex product_details'>
+        <div className='image_sm_thumbnail d-flex column'>
+          { smallThumbnailImage?.map(_image =>{
+            return (
+                <img onClick={() => this.setState({productImage:_image}) } key={_image} src={_image} />
+              )
+            })
+          }
         </div>
-        { attributes.map(attribute =>{
-          if (attribute.type === 'swatch') {
-            return (
-              <div key={attribute.id}>     
-                <p className="product_subtitle">{attribute.name}:</p>
-                <div className="product_color d-flex">
-                  { attribute.items.map(item =>{
-                    return(
-                      <div onClick={()=>selectedAttribute(attribute.name, item.value, item.id)} 
-                      className={attributeSelected[attribute.name] == item.value ? "selectedSwatch" : "" }
-                      key={item.id} id={item.id} style={{backgroundColor:`${item.value}`}}></div>
-                    )
-                  })
-                  }
-                </div>
-              </div> 
-            )
-          } else {
-            return (
-              <div key={attribute.id}>
-                <p className="product_subtitle">{attribute.name}:</p>
-                <div className="product_size d-flex">
-                  { attribute.items.map( item =>{
-                    return(
-                      <div className={attributeSelected[attribute.name] == item.value ? "selected" : "" } 
-                      onClick={()=>selectedAttribute(attribute.name, item.value, item.id)} key={item.id} id={item.id}>
-                        {item.value}
-                      </div>
+        <div className='image_lg_thumbnail'>
+          <img src={this.state.productImage}  />
+        </div>
+        <div className='product_details_body'>
+          <div>
+            <p className="product_brand bold" >{this.props.brand}</p>
+            <p className="product_name">{this.state.name}</p>
+          </div>
+          { this.props.attributes.map(attribute =>{
+            if (attribute.type === 'swatch') {
+              return (
+                <div key={attribute.id}>     
+                  <p className="product_subtitle">{attribute.name}:</p>
+                  <div className="product_color d-flex">
+                    { attribute.items.map(item =>{
+                      return(
+                        <div onClick={()=>this.selectedAttribute(attribute.name, item.value, item.id)} 
+                        className={this.state.attributeSelected[attribute.name] == item.value ? "selectedSwatch" : "" }
+                        key={item.id} id={item.id} style={{backgroundColor:`${item.value}`}}></div>
                       )
                     })
-                  }
-                </div>
-              </div>
+                    }
+                  </div>
+                </div> 
               )
-            }
-          })
-        }
-        <div>  
-          <p className="product_subtitle">PRICE:</p>
-          <p className="price"><small>{selectedCurrency.currency.symbol}</small><span>{selectedCurrency.amount}</span></p>
+            } else {
+              return (
+                <div key={attribute.id}>
+                  <p className="product_subtitle">{attribute.name}:</p>
+                  <div className="product_size d-flex">
+                    { attribute.items.map( item =>{
+                      return(
+                        <div className={this.state.attributeSelected[attribute.name] == item.value ? "selected" : "" } 
+                        onClick={()=>this.selectedAttribute(attribute.name, item.value, item.id)} key={item.id} id={item.id}>
+                          {item.value}
+                        </div>
+                        )
+                      })
+                    }
+                  </div>
+                </div>
+                )
+              }
+            })
+          }
+          <div>  
+            <p className="product_subtitle">PRICE:</p>
+            <p className="price"><small>{selectedCurrency.currency.symbol}</small><span>{selectedCurrency.amount}</span></p>
+          </div>
+          <button onClick={addToBasket} className="button-primary" >Add to cart</button>
+          <div className="product_description" dangerouslySetInnerHTML={{__html: this.props.description}} />
         </div>
-        <button onClick={addToBasket} className="button-primary" >Add to cart</button>
-        <div className="product_description" dangerouslySetInnerHTML={{__html:description}} />
       </div>
-    </div>
-  )
+    )
+
+  }
 
 }
 

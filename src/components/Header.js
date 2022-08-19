@@ -1,86 +1,104 @@
-import React, { useState, useContext } from 'react';
+import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import CartOverlay from './CartOverlay';
-import {CURRENCY} from '../queries/graphqlQueries';
-import { useQuery } from '@apollo/client';
-import currencyContext from '../context/CurrencyContext'
-import {basketContext} from '../context/BasketContext'
+import {dataLayer} from '../context/DataContext'
+import {CURRENCY} from "../queries/graphqlQueries";
+import {Client} from '../client';
 
 
-function Header() {
+class Header extends Component{
 
-  const {data} = useQuery(CURRENCY)
+  constructor(){
+    super()
+    this.state = {
+      data: null,
+      error: false,
+      loading: true,
+      currencyDropdown: false,
+      cartOverlay: false
+    }
+  }
 
-  const [open, setOpen] = useState({
-    currencyDropdown: false,
-    cartOverlay: false,
-  });
+  static contextType = dataLayer;
 
-  const {totalQuantity} = useContext(basketContext);
-  
-  const {currency, setCurrency} = useContext(currencyContext);
-  const selectedCurrency = data?.currencies.find(_currency => _currency.label === currency);
-
-  const dropDown = (e)=>{
-    if(e.target.id == 'currencies'){
-      setOpen(prevOpen =>{
+  currency_dropDown = () => {
+      this.setState((state) =>{
         return {
-          ...prevOpen,
-          currencyDropdown : !prevOpen.currencyDropdown
+          currencyDropdown : !state.currencyDropdown
         }
       })
-    }else {
-      setOpen(prevOpen =>{
-        return{
-          ...prevOpen,
-          cartOverlay : !prevOpen.cartOverlay
-        }
-      })
-      }
     }
 
-  return (
+  cartOverlay_dropDown = () => {  
+      this.setState((state) =>{
+        return{
+          cartOverlay : !state.cartOverlay
+        }
+      })
+    }
 
-    <header>
-      <div className="container d-flex align-center space-between">
-        <ul className="list d-flex">
-          <li className="Nav_list_items">women</li>
-          <li className="Nav_list_items">men</li>
-          <li className="Nav_list_items">kids</li>
-        </ul>
-        <Link to='/'>
-          <img className="logo" src="../images/logo.png" alt="logo" />
-        </Link>
-        <div className="d-flex align-center">
-          <div className="bold relative header_currency">
-            <small id="currencies" onClick={dropDown} className="header_currency" >{selectedCurrency?.symbol}</small>
-            { open.currencyDropdown &&
-              <ul className="list absolute currency_list_position anime">
-                { data?.currencies.map(currency =>{
-                  return (
-                    <li onClick={()=> setCurrency(currency.label)} key={currency.label} id={currency.label} className="currency_list">{currency.symbol} {currency.label}</li>
-                  )
-                })
+    componentDidMount = () => {
+      Client.query({query: CURRENCY}).then(({data, error, loading})=>{
+        this.setState({
+          data,
+          error,
+          loading
+        })
+      })
+    }
 
-                }
-              </ul>
-            }
-          </div>
-          <div className="relative">
-            { totalQuantity > 0 &&
-              <div className="absolute qty_badge">
-                {totalQuantity}
-              </div>
-            }
-            <img onClick={dropDown} className="header_cart" src="../images/cart.svg" />
-            { open.cartOverlay &&
-              <CartOverlay />
-            }
+  render () {
+
+    const {currency, totalQuantity, updateCurrency} = this.context
+
+    if(this.state.error) return <h1>Error....</h1>
+    if(this.state.loading) return <h1>Loading....</h1>
+
+    const selectedCurrency = this.state.data?.currencies.find(_currency => _currency.label === currency);
+
+    return (
+      <header>
+        <div className="container d-flex align-center space-between">
+          <ul className="list d-flex">
+            <li className="Nav_list_items">women</li>
+            <li className="Nav_list_items">men</li>
+            <li className="Nav_list_items">kids</li>
+          </ul>
+          <Link to='/'>
+            <img className="logo" src="../images/logo.png" alt="logo" />
+          </Link>
+          <div className="d-flex align-center">
+            <div className="bold relative header_currency">
+              <small id="currencies" onClick={this.currency_dropDown} className="header_currency" >{selectedCurrency?.symbol}</small>
+              { this.state.currencyDropdown &&
+                <ul className="list absolute currency_list_position anime">
+                  { this.state.data?.currencies.map(currency =>{
+                    return (
+                      <li onClick={()=> updateCurrency(currency.label)} key={currency.label} id={currency.label} className="currency_list">{currency.symbol} {currency.label}</li>
+                    )
+                  })
+  
+                  }
+                </ul>
+              }
+            </div>
+            <div className="relative">
+              { totalQuantity > 0 &&
+                <div className="absolute qty_badge">
+                  {totalQuantity}
+                </div>
+              }
+              <img onClick={this.cartOverlay_dropDown} className="header_cart" src="../images/cart.svg" />
+              { this.state.cartOverlay &&
+                <CartOverlay />
+              }
+            </div>
           </div>
         </div>
-      </div>
-    </header>
-  )
+      </header>
+    )
+  
+  }
 }
 
 export default Header
