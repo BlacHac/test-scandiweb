@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import CartOverlay from './CartOverlay';
 import {dataLayer} from '../context/DataContext'
-import {CURRENCY} from "../queries/graphqlQueries";
+import {CURRENCY} from '../queries/graphqlQueries';
 import {Client} from '../client';
 
 
@@ -15,7 +15,6 @@ class Header extends Component{
       error: false,
       loading: true,
       currencyDropdown: false,
-      cartOverlay: false
     }
   }
 
@@ -25,14 +24,6 @@ class Header extends Component{
       this.setState((state) =>{
         return {
           currencyDropdown : !state.currencyDropdown
-        }
-      })
-    }
-
-  cartOverlay_dropDown = () => {  
-      this.setState((state) =>{
-        return{
-          cartOverlay : !state.cartOverlay
         }
       })
     }
@@ -49,7 +40,7 @@ class Header extends Component{
 
   render () {
 
-    const {currency, totalQuantity, updateCurrency} = this.context
+    const {currency, totalQuantity, updateCurrency, cartOverlay_dropDown, cartOverlay} = this.context
 
     if(this.state.error) return <h1>Error....</h1>
     if(this.state.loading) return <h1>Loading....</h1>
@@ -69,7 +60,14 @@ class Header extends Component{
           </Link>
           <div className="d-flex align-center">
             <div className="bold relative header_currency">
-              <small id="currencies" onClick={this.currency_dropDown} className="header_currency" >{selectedCurrency?.symbol}</small>
+              <div onClick={this.currency_dropDown} className="relative">
+                <small id="currencies" className="header_currency" >{selectedCurrency?.symbol}</small>
+                { 
+                  !this.state.currencyDropdown ? 
+                  <img className="absolute header_currency_arrowhead" src="../images/arrowhead-down.png" /> :
+                  <img className="absolute header_currency_arrowhead" src="../images/arrowhead-up.png" /> 
+                }
+              </div>
               { this.state.currencyDropdown &&
                 <ul className="list absolute currency_list_position anime">
                   { this.state.data?.currencies.map(currency =>{
@@ -88,8 +86,8 @@ class Header extends Component{
                   {totalQuantity}
                 </div>
               }
-              <img onClick={this.cartOverlay_dropDown} className="header_cart" src="../images/cart.svg" />
-              { this.state.cartOverlay &&
+              <img onClick={cartOverlay_dropDown} className="header_cart" src="../images/cart.svg" />
+              { cartOverlay &&
                 <CartOverlay />
               }
             </div>
@@ -97,7 +95,6 @@ class Header extends Component{
         </div>
       </header>
     )
-  
   }
 }
 

@@ -6,7 +6,6 @@ class Cart_ProductCard extends Component {
     constructor(props){
         super(props)
         this.state = {
-            attributeSelected : props.attributeSelected,
             imageIndex : 0,
             removeMessage : false
         }
@@ -27,19 +26,11 @@ class Cart_ProductCard extends Component {
     }
 
     removeMessageShow = () => {
-        this.setState(() => {
-            return {
-                removeMessage : true
-            }
-        })
+        this.setState({removeMessage : true})
     }
 
     dontRemove = () => {
-        this.setState(() => {
-            return {
-                removeMessage : false
-            }
-        })
+        this.setState({removeMessage : false})
     }
 
   render(){
@@ -68,7 +59,17 @@ class Cart_ProductCard extends Component {
 
     const updateAttribute = (attributeName, value) => {
         findProduct.chosenAttributes[attributeName] = value ;
-        updateBasket ([...basket])
+        const filterFindProduct = basket.filter(_product => _product != findProduct)
+        const duplicateProduct = filterFindProduct.find(_product => {
+            return _product.id == findProduct.id && Object.keys(findProduct.chosenAttributes).every(_attribute => _product.chosenAttributes[_attribute] == findProduct.chosenAttributes[_attribute]);
+        })
+        if(duplicateProduct){
+            alert('this product with same attribute available')
+            findProduct.chosenAttributes= this.props.chosenAttributes;
+        } else {
+            updateBasket ([...basket])
+        }
+        
     }
 
     const removeProduct = () => {

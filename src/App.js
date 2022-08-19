@@ -5,7 +5,8 @@ import ProductDetailsPage from "./pages/ProductDetailsPage";
 import CartPage from "./pages/CartPage";
 import {Client} from './client';
 import {MASTER_DATA} from "./queries/graphqlQueries";
-import DataLayerProvider from './context/DataContext';
+import {dataLayer} from './context/DataContext';
+import Header from "./components/Header";
 
 
 class App extends Component{
@@ -19,6 +20,8 @@ class App extends Component{
     }
   }
   
+  static contextType = dataLayer;
+
   componentDidMount(){
     Client.query({query: MASTER_DATA}).then(({data, error, loading})=>{
       this.setState({
@@ -36,10 +39,10 @@ class App extends Component{
     if(this.state.loading) return <h1>Loading....</h1>
 
     return (
-      <DataLayerProvider>
+      <>
         <Router>
-          <Routes>
-            <Route>
+          <Header />
+            <Routes>
               <Route path={'/'} element={<CategoryPage />} />
               { this.state.data?.categories[0].products.map(product =>{
                 return(
@@ -51,10 +54,12 @@ class App extends Component{
                 })
               }
               <Route path={'/cart'} element={<CartPage />} />
-            </Route>
-          </Routes>
+            </Routes>
         </Router>
-      </DataLayerProvider>  
+        { this.context.cartOverlay &&
+          <div className="page_mask"></div>
+        }
+      </>  
     );  
   }
 }

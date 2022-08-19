@@ -356,6 +356,7 @@ a{
   width: 25px;
 }
 
+.remove_product,
 .category_title,
 .header_cart,
 .header_currency,
@@ -432,6 +433,7 @@ a{
   border-radius: 50%;
   padding: 5px 7px;
   background-color: #5ECE7B;
+  box-shadow: 0 0 5px black;
 }
 
 .cart_badge img{
@@ -441,10 +443,14 @@ a{
 .remove_product{
   height: 20px;
   width: 20px;
+  background-color: rgba(255, 0, 0, 0.842);
+  border: none;
+  border-radius: 5px;
+  padding: 1px 0;
 }
 
 .remove_product img{
-  width: 15px;
+  width: 18px;
 }
 
 .removeMessage{
@@ -455,5 +461,19 @@ a{
 
 .removeMessage button{
   padding: 2px 5px;
-  
+}
+
+.header_currency_arrowhead{
+  width: 10px;
+  top: 60%;
+  left: 85%;
+}
+
+.page_mask{
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 58px;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
