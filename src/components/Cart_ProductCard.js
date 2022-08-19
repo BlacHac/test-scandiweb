@@ -57,19 +57,20 @@ class Cart_ProductCard extends Component {
         }
     }
 
+
     const updateAttribute = (attributeName, value) => {
-        findProduct.chosenAttributes[attributeName] = value ;
-        const filterFindProduct = basket.filter(_product => _product != findProduct)
-        const duplicateProduct = filterFindProduct.find(_product => {
-            return _product.id == findProduct.id && Object.keys(findProduct.chosenAttributes).every(_attribute => _product.chosenAttributes[_attribute] == findProduct.chosenAttributes[_attribute]);
-        })
+        const duplicateProduct = basket.find(_product => _product.id == this.props.id && Object.keys(_product.chosenAttributes)
+        .every(key => {
+            return _product.chosenAttributes[_attribute] === (_attribute === attributeName) ? value : this.props.chosenAttributes[_attribute]
+        }))
+
         if(duplicateProduct){
             alert('this product with same attribute available')
-            findProduct.chosenAttributes= this.props.chosenAttributes;
         } else {
+            findProduct.chosenAttributes[attributeName] = value ;
             updateBasket ([...basket])
+            console.log("else")
         }
-        
     }
 
     const removeProduct = () => {
