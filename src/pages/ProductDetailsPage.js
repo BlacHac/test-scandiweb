@@ -79,7 +79,7 @@ class ProductDetailsPage extends Component {
         <div className='product_details_body'>
           <div>
             <p className="product_brand bold" >{this.props.brand}</p>
-            <p className="product_name">{this.state.name}</p>
+            <p className="product_name">{this.props.name}</p>
           </div>
           { this.props.attributes.map(attribute =>{
             if (attribute.type === 'swatch') {

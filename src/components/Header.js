@@ -58,7 +58,7 @@ class Header extends Component{
           <Link to='/'>
             <img className="logo" src="../images/logo.png" alt="logo" />
           </Link>
-          <div className="d-flex align-center">
+          <div className="cNc d-flex align-center">
             <div className="bold relative header_currency">
               <div onClick={this.currency_dropDown} className="relative">
                 <small id="currencies" className="header_currency" >{selectedCurrency?.symbol}</small>
